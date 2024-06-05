@@ -1,0 +1,53 @@
+<idea-plugin>
+    <id>com.ubuntuyouiwe.quickmodule</id>
+    <name>QuickModule</name>
+    <version>1.0-SNAPSHOT</version>
+    <vendor email="ibrahim.kurt@ubuntuyouiwe.com" url="http://www.com.ubuntuyouiwe.quickmodule">Your Name</vendor>
+
+    <description>
+        My Plugin Description
+        My Plugin Description
+        My Plugin Description
+    </description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.androidstudio</depends>
+    <depends>org.jetbrains.android</depends>
+
+    <actions>
+        <action id="ShowDetailDialogAction" class="com.ibrahimkurt.quickmodule.ShowDetailDialogAction" text="QuickModule">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+
+</idea-plugin>
+
+
+        <!--
+        <idea-plugin>
+        <id>com.ubuntuyouiwe.quickmodule</id>
+        <name>QuickModule</name>
+        <version>1.0-SNAPSHOT</version>
+        <vendor email="ibrahim.kurt@ubuntuyouiwe.com" url="http://www.com.ubuntuyouiwe.quickmodule">Your Name</vendor>
+
+        <description>
+            My Plugin Description
+            My Plugin Description
+            My Plugin Description
+        </description>
+
+        <depends>com.intellij.modules.platform</depends>
+        <depends>com.intellij.modules.androidstudio</depends>
+        <depends>org.jetbrains.android</depends>
+
+        <extensions defaultExtensionNs="com.intellij">
+            &lt;!&ndash; Tool window extension kaldırıldı &ndash;&gt;
+        </extensions>
+
+        <actions>
+            <action id="ShowDetailDialogAction" class="com.ibrahimkurt.quickmodule.ShowDetailDialogAction" text="Show Detail Dialog">
+                <add-to-group group-id="ToolsMenu" anchor="last"/>
+            </action>
+        </actions>
+        </idea-plugin>
+        -->
