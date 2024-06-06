@@ -27,6 +27,7 @@ class Detail(val project: Project) : JPanel() {
         val moduleNames = getModulesFromSettingsGradle(project.basePath)
 
         moduleNames.forEach { module ->
+            println(module)
             val parts = module.split(":").filter { it.isNotEmpty() }
             addModuleToTree(rootNode, parts)
         }
@@ -35,8 +36,6 @@ class Detail(val project: Project) : JPanel() {
         tree = Tree(treeModel)
 
         tree.cellRenderer = object : DefaultTreeCellRenderer() {
-            private val folderIcon = UIManager.getIcon("FileView.directoryIcon")
-            private val fileIcon = UIManager.getIcon("FileView.fileIcon")
             override fun getTreeCellRendererComponent(
                 tree: JTree?,
                 value: Any?,
@@ -49,7 +48,19 @@ class Detail(val project: Project) : JPanel() {
                 val component = super.getTreeCellRendererComponent(
                     tree, value, sel, expanded, leaf, row, hasFocus
                 )
-                icon = if (leaf) fileIcon else folderIcon
+                if (value is DefaultMutableTreeNode) {
+                    val node = value.userObject
+                    if (node is String) {
+                        icon = when {
+                            node.contains("application", true) -> MyIcons.ApplicationModule
+                            node.contains("android", true) -> MyIcons.AndroidModule
+                            node.contains("kotlin", true) -> MyIcons.KotlinModule
+                            node.contains("java", true) -> MyIcons.JavaModule
+                            node.contains("benchmark", true) -> MyIcons.BenchmarkModule
+                            else -> MyIcons.OtherModules
+                        }
+                    }
+                }
                 return component
             }
         }
@@ -128,28 +139,12 @@ class Detail(val project: Project) : JPanel() {
                 )
             }
 
-
             val regex = """:([^"]*)"""".toRegex()
 
-
-
             lines.map { it.trim() }.forEach { line ->
-
                 val matches = regex.findAll(line)
-
-
-                val asd = matches.map {
-                    it.groupValues.forEachIndexed { i, asdd ->
-                        println("mathesssss: $i , $asdd")
-
-                    }
-
-                    it.groupValues[1].trim()
-                }.toList().filter { it.isNotEmpty() }
-
-
-
-                modules.addAll(asd)
+                val moduleNames = matches.map { it.groupValues[1].trim() }.toList().filter { it.isNotEmpty() }
+                modules.addAll(moduleNames)
             }
         } ?: run {
             println("Base path is null")
