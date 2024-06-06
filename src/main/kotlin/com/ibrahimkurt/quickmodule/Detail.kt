@@ -1,7 +1,6 @@
 package com.ibrahimkurt.quickmodule
 
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VirtualFile
@@ -23,12 +22,10 @@ class Detail(val project: Project) : JPanel() {
     init {
         layout = BorderLayout()
 
-        val moduleManager = ModuleManager.getInstance(project)
-        val modules = moduleManager.modules
-
         val rootNode = DefaultMutableTreeNode("Modules")
 
         val moduleNames = getModulesFromSettingsGradle(project.basePath)
+
         moduleNames.forEach { module ->
             val parts = module.split(":").filter { it.isNotEmpty() }
             addModuleToTree(rootNode, parts)
@@ -123,16 +120,36 @@ class Detail(val project: Project) : JPanel() {
                     lines.add(line)
                 }
             } else {
-                println("Neither settings.gradle nor settings.gradle.kts file exists at path: $basePath")
+                Messages.showMessageDialog(
+                    project,
+                    "Neither settings.gradle nor settings.gradle.kts file exists at path: $basePath",
+                    "Warning",
+                    Messages.getWarningIcon()
+                )
             }
 
-            lines.filter { it.trim().startsWith("include") }.forEach { line ->
-                val includedModules = line.split("include")
-                    .drop(1)
-                    .flatMap { it.split(",") }
-                    .map { it.trim().removeSurrounding("'").removeSurrounding("\"").removeSurrounding("(", ")").trim() }
-                    .filter { it.isNotEmpty() }
-                modules.addAll(includedModules)
+
+            val regex = """:([^"]*)"""".toRegex()
+
+
+
+            lines.map { it.trim() }.forEach { line ->
+
+                val matches = regex.findAll(line)
+
+
+                val asd = matches.map {
+                    it.groupValues.forEachIndexed { i, asdd ->
+                        println("mathesssss: $i , $asdd")
+
+                    }
+
+                    it.groupValues[1].trim()
+                }.toList().filter { it.isNotEmpty() }
+
+
+
+                modules.addAll(asd)
             }
         } ?: run {
             println("Base path is null")

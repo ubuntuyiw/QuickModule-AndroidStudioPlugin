@@ -25,6 +25,7 @@ intellij {
     plugins.set(listOf("org.jetbrains.kotlin", "org.jetbrains.android"))
 }
 dependencies {
+    implementation("org.jetbrains:annotations:24.1.0")
 
 }
 tasks {
